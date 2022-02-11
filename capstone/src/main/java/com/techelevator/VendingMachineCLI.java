@@ -16,6 +16,7 @@ public class VendingMachineCLI {
 	private static final String PURCHASE_MENU_OPTION_FINISH_TRANSACTION = "Finish Transaction";
 	private static final String[] PURCHASE_MENU_OPTIONS = {PURCHASE_MENU_OPTION_FEED_MONEY, PURCHASE_MENU_OPTION_SELECT_PRODUCT,PURCHASE_MENU_OPTION_FINISH_TRANSACTION};
 	private Menu menu;
+	private VendingMachine vendingMachine = new VendingMachine();
 
 	public VendingMachineCLI(Menu menu) {
 		this.menu = menu;
@@ -27,27 +28,16 @@ public class VendingMachineCLI {
 
 
 			if (choice.equals(MAIN_MENU_OPTION_DISPLAY_ITEMS)) {
-				// display vending machine items
-				//readin the csv
-				//vendingma.split("|")
-				//		store value =
-				//split the values of the csv based on the pipe char
-				//store those values in an array strings
-				//put in map with key value and updated method
-				//how do we update the quantity every time an item is taken out?
-				//we can use the displayMenuOption method after we split and store values in variables
-				//slot=menu.getChoiceFromOptions(ait)
-
-				VendingMachine vendingMachine = new VendingMachine();
-				menu.getChoiceFromOptions(vendingMachine.inventory);
+				for (ItemsForSale item : vendingMachine.getInventory()){
+					System.out.format("%s %-20s $%s %s %n", item.getLocation(), item.getName(), item.getPrice(), item.getStock());
+				}
 
 
 			} else if (choice.equals(MAIN_MENU_OPTION_PURCHASE)) {
 				String secondMenu = (String) menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
 				if (secondMenu.equals(PURCHASE_MENU_OPTION_FEED_MONEY)){
 					//add money to machine using feed money method
-					VendingMachine vendingMachine2 = new VendingMachine();
-					vendingMachine2.feedMoney();
+					vendingMachine.feedMoney();
 
 				}else if (secondMenu.equals(PURCHASE_MENU_OPTION_SELECT_PRODUCT)){
 					//shows the items, prompts for a choice, dispenses product & returns message
