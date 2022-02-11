@@ -15,6 +15,7 @@ public class Chips extends ItemsForSale{
     Chips A3 = new Chips( "A3", "Grain Waves", new BigDecimal("2.75"), 5);
     Chips A4 = new Chips("A4", "Cloud Popcorn", new BigDecimal("3.65"), 5);
 
+
     public String getSound() {
         return "Crunch Crunch, Yum!";
     }

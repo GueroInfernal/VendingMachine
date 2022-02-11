@@ -39,14 +39,16 @@ public class VendingMachineCLI {
 				//slot=menu.getChoiceFromOptions(ait)
 
 				VendingMachine vendingMachine = new VendingMachine();
-				String[] value = vendingMachine.getSpiltArray();
-				//menu.getChoiceFromOptions(value);
+				menu.getChoiceFromOptions(vendingMachine.inventory);
 
 
 			} else if (choice.equals(MAIN_MENU_OPTION_PURCHASE)) {
 				String secondMenu = (String) menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
 				if (secondMenu.equals(PURCHASE_MENU_OPTION_FEED_MONEY)){
 					//add money to machine using feed money method
+					VendingMachine vendingMachine2 = new VendingMachine();
+					vendingMachine2.feedMoney();
+
 				}else if (secondMenu.equals(PURCHASE_MENU_OPTION_SELECT_PRODUCT)){
 					//shows the items, prompts for a choice, dispenses product & returns message
 				} else if (secondMenu.equals(PURCHASE_MENU_OPTION_FINISH_TRANSACTION)){
