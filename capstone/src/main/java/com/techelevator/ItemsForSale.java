@@ -6,8 +6,9 @@ public abstract class ItemsForSale {
 
     private String  name;
     private BigDecimal price;
-    private int stock;
+    private int stock =  5;
     private String location;
+
 
     public ItemsForSale(){
     }
@@ -18,6 +19,7 @@ public abstract class ItemsForSale {
         this.name = name;
         this.price = price;
         this.stock = stock;
+
     }
 
     public String getLocation(){
@@ -46,4 +48,6 @@ public abstract class ItemsForSale {
     public void setStock(int stock) {
         this.stock = stock;
     }
+
+    public abstract String getSound();
 }

@@ -34,6 +34,7 @@ public class Menu {
 			}
 		} catch (NumberFormatException e) {
 			// eat the exception, an error message will be displayed below since choice will be null
+			System.out.println(e.getMessage()); // added sout statement to display error message
 		}
 		if (choice == null) {
 			out.println(System.lineSeparator() + "*** " + userInput + " is not a valid option ***" + System.lineSeparator());

@@ -2,6 +2,7 @@ package com.techelevator;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.math.BigDecimal;
 import java.util.*;
 
 public class VendingMachine {
@@ -31,7 +32,7 @@ public class VendingMachine {
                 String line = fileToRead.nextLine();
                 // Map<String,Integer> listItems = new HashMap<>();
                  slotLocation = line.split("\\|");
-                System.out.println(Arrays.toString(slotLocation));
+                System.out.println(Arrays.toString(slotLocation) + " " + 5 );
             }
         } catch (FileNotFoundException e) {
             System.out.println("File not found");
@@ -42,5 +43,6 @@ public class VendingMachine {
    public void purchase(){
 
    }
-
+   //public void feedMoney(){}
+    //public void purchaseProduct(){}
 }
