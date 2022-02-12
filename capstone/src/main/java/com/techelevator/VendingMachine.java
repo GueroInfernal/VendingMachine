@@ -3,6 +3,7 @@ package com.techelevator;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 
 public class VendingMachine {
@@ -66,12 +67,8 @@ public class VendingMachine {
         Scanner userInput = new Scanner(System.in);
         String amount = userInput.nextLine();
         BigDecimal amountToDeposit = new BigDecimal(amount);
-        while(!amount.equals(1.00) || !amount.equals(2) || !amount.equals(5) || !amount.equals("10")){
-            System.out.println("Please input a valid amount");
-             amount = userInput.nextLine();
-             amountToDeposit = new BigDecimal(amount);
-        }
-
+        //rounds value up to the nearest whole number.
+        amountToDeposit = amountToDeposit.setScale(0, RoundingMode.UP);
 
         return this.machineBalance = machineBalance.add(amountToDeposit);
 
@@ -91,7 +88,8 @@ public class VendingMachine {
 
     public void selectProduct() { //TODO Left of here how can I access a certain object constructor value from array list?
         //show list of prods available, and allow customer to enter corresponding code.
-        loadInventory();
+
+
         Scanner userInput = new Scanner(System.in);
         String userResponse = userInput.nextLine();
 
