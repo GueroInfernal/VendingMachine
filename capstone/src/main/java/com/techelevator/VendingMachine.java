@@ -17,11 +17,6 @@ public class VendingMachine {
         return this.machineBalance;
     }
 
-/*
-    public void setMachineBalance(BigDecimal machineBalance) { // machine balance does not need a setter just like how you cant set your bank account balance to what ever you want!
-        this.machineBalance = machineBalance;
-    }*/
-
 
     public int getCurrentStock() {
         return this.getCurrentStock();
@@ -47,7 +42,6 @@ public class VendingMachine {
                 if (parts[3].equals("Chip")) {
                     Chips chip = new Chips(parts[0], parts[1], new BigDecimal(parts[2]), INITIAL_STOCK);
                     inventory.add(chip);
-                    //TODO add else ifs for other types
                 } else if (parts[3].equals("Candy")) {
                     Candy candy = new Candy(parts[0], parts[1], new BigDecimal(parts[2]), INITIAL_STOCK);
                     inventory.add(candy);
@@ -71,8 +65,14 @@ public class VendingMachine {
 
         Scanner userInput = new Scanner(System.in);
         String amount = userInput.nextLine();
-
         BigDecimal amountToDeposit = new BigDecimal(amount);
+        while(!amount.equals(1.00) || !amount.equals(2) || !amount.equals(5) || !amount.equals("10")){
+            System.out.println("Please input a valid amount");
+             amount = userInput.nextLine();
+             amountToDeposit = new BigDecimal(amount);
+        }
+
+
         return this.machineBalance = machineBalance.add(amountToDeposit);
 
 //       System.out.println("Current balance: $" + machineBalance);
@@ -98,7 +98,13 @@ public class VendingMachine {
         String result = "";
 
         for (ItemsForSale item : inventory) {
-            if (item.getLocation().equals(userResponse)) {
+            if (item.getLocation().equals(userResponse)) { //make case-insensitive
+                //subtract item price from machine balance
+                //return name of item and its price
+                //If code doesn't exist return to purchase menu, If sold out notify, and return to purchase menu *done in CLI
+                //
+
+
                 result = item.getSound();
             }
         }

@@ -10,6 +10,7 @@ public abstract class ItemsForSale {
     private String location;
 
 
+
     public ItemsForSale(){
     }
 
