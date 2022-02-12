@@ -30,17 +30,22 @@ public class VendingMachineCLI {
 			if (choice.equals(MAIN_MENU_OPTION_DISPLAY_ITEMS)) {
 				for (ItemsForSale item : vendingMachine.getInventory()){
 					System.out.format("%s %-20s $%s %s %n", item.getLocation(), item.getName(), item.getPrice(), item.getStock());
+
 				}
 
 
 			} else if (choice.equals(MAIN_MENU_OPTION_PURCHASE)) {
-				String secondMenu = (String) menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
+				String secondMenu = (String) menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);// does this display the menu?
 				if (secondMenu.equals(PURCHASE_MENU_OPTION_FEED_MONEY)){
 					//add money to machine using feed money method
+					//vendingMachine.feedMoney();
+					System.out.println("Current Money Provided: $"+vendingMachine.getMachineBalance());
 					vendingMachine.feedMoney();
 
 				}else if (secondMenu.equals(PURCHASE_MENU_OPTION_SELECT_PRODUCT)){
 					//shows the items, prompts for a choice, dispenses product & returns message
+
+					vendingMachine.selectProduct();
 				} else if (secondMenu.equals(PURCHASE_MENU_OPTION_FINISH_TRANSACTION)){
 					//calculates & dispenses change into Quarters, dimes and nickels, returns change,
 					//updates current balance to 0.
@@ -49,7 +54,7 @@ public class VendingMachineCLI {
 				}
 			}
 		else if(choice.equals(MAIN_MENU_OPTION_EXIT)){
-				//To-do
+				//ToDo
 				System.exit(0);
 
 			}
