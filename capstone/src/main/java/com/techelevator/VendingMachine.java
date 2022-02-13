@@ -11,6 +11,8 @@ public class VendingMachine {
     private static final int INITIAL_STOCK = 5;
     private static int currentStock;
     private BigDecimal machineBalance = new BigDecimal("0.00");
+    private BigDecimal remainingBalance = new BigDecimal("0.00");
+
     List<ItemsForSale> inventory = new ArrayList<>();
 
 
@@ -18,6 +20,9 @@ public class VendingMachine {
         return this.machineBalance;
     }
 
+    public BigDecimal getRemainingBalance(){
+        return this.machineBalance;
+    }
 
     public int getCurrentStock() {
         return this.getCurrentStock();
@@ -92,26 +97,45 @@ public class VendingMachine {
 
         Scanner userInput = new Scanner(System.in);
         String userResponse = userInput.nextLine();
+        String userResponseToUpper=userResponse.toUpperCase();
 
-        String result = "";
+        String result = "Invalid input";
+        String name="";
+        BigDecimal price= new BigDecimal("0.00");
 
         for (ItemsForSale item : inventory) {
-            if (item.getLocation().equals(userResponse)) { //make case-insensitive
+            if (item.getLocation().equals(userResponseToUpper)) { //make case-insensitive
                 //subtract item price from machine balance
                 //return name of item and its price
                 //If code doesn't exist return to purchase menu, If sold out notify, and return to purchase menu *done in CLI
                 //
 
+                this.remainingBalance= getMachineBalance().subtract(item.getPrice());
 
                 result = item.getSound();
+                name= item.getName();
+                price=item.getPrice();
+
             }
         }
 
+        System.out.println(name);
+        System.out.println(price);
         System.out.println(result);
+        System.out.println(this.remainingBalance);
+    }
+
+    public void getRemainingBalance(BigDecimal remainingBalance){
+
+        remainingBalance= this.remainingBalance;
+
     }
 
     public void calculateChange() {
 
+        //taking the remaining balance and dividing it from quarters to nickels
+        //
+        
         int quarter = 25;
         int dime = 10;
         int nickle = 5;
