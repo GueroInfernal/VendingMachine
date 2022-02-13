@@ -120,9 +120,9 @@ public class VendingMachine {
         }
 
         System.out.println(name);
-        System.out.println(price);
+        System.out.println("Cost: $" + price);
         System.out.println(result);
-        System.out.println(this.remainingBalance);
+        System.out.println("Remaining balance: $" + this.remainingBalance);
     }
 
     public void getRemainingBalance(BigDecimal remainingBalance){
