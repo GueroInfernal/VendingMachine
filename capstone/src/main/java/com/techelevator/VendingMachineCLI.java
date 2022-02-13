@@ -69,30 +69,21 @@ public class VendingMachineCLI {
 
                                 System.out.println("Make a selection");
                                 vendingMachine.selectProduct();
+
                             } else {
                                 System.out.println("You have insufficient funds try again!");
 
                             }
-
-
-//
-//						//check balance is greater than or equal to get price
-//						for(ItemsForSale item : vendingMachine.getInventory()) {
-//							if (vendingMachine.getMachineBalance().compareTo(item.getPrice()) <= 0) {
-//
-//								System.out.println("Please add more funds");
-//								menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
-//							}
-//
-//
-//							//prompts for a choice, dispenses product & returns message
-//							System.out.println("Please enter this ");
-//							vendingMachine.selectProduct();
+						    //prompts for a choice, dispenses product & returns message
 
 
 
                     } else if (secondMenu.equals(PURCHASE_MENU_OPTION_FINISH_TRANSACTION)) {
                         doneWithPurchase=true;
+                        vendingMachine.finishTransaction();
+
+
+
                         //calculates & dispenses change into Quarters, dimes and nickels, returns change,
                         //updates current balance to 0.
                         //return to main menu

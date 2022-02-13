@@ -50,13 +50,13 @@ public class VendingMachine{
                     Chips chip = new Chips(parts[0], parts[1], new BigDecimal(parts[2]), 5);
                     inventory.add(chip);
                 } else if (parts[3].equals("Candy")) {
-                    Candy candy = new Candy(parts[0], parts[1], new BigDecimal(parts[2]), initialStock);
+                    Candy candy = new Candy(parts[0], parts[1], new BigDecimal(parts[2]), 5);
                     inventory.add(candy);
                 } else if (parts[3].equals("Drink")) {
-                    Beverages drink = new Beverages(parts[0], parts[1], new BigDecimal(parts[2]), initialStock);
+                    Beverages drink = new Beverages(parts[0], parts[1], new BigDecimal(parts[2]), 5);
                     inventory.add(drink);
                 } else {
-                    Gum gum = new Gum(parts[0], parts[1], new BigDecimal(parts[2]), initialStock);
+                    Gum gum = new Gum(parts[0], parts[1], new BigDecimal(parts[2]), 5);
                     inventory.add(gum);
                 }
 
@@ -92,7 +92,7 @@ public class VendingMachine{
     }
 
 
-    public void selectProduct() { //TODO Left of here how can I access a certain object constructor value from array list?
+    public void selectProduct() {
         //show list of prods available, and allow customer to enter corresponding code.
 
 
@@ -107,36 +107,41 @@ public class VendingMachine{
         for (ItemsForSale item : inventory) {
             if (item.getLocation().equals(userResponseToUpper)) { //make case-insensitive
 
-                //If code doesn't exist return to purchase menu, If sold out notify, and return to purchase menu *done in CLI
 
-                this.remainingBalance= getMachineBalance().subtract(item.getPrice()); //subtract item price from balance
+                if(item.getStock() > 0 ) {
+                    this.remainingBalance= getMachineBalance().subtract(item.getPrice()); //subtract item price from balance
+                    this.machineBalance= remainingBalance;
+                    int newStock = item.removeStock();
+                    item.setStock(newStock);
+                    if(newStock < initialStock) {
 
-                this.machineBalance= remainingBalance;
-//                //this.initialStock = item.getStock()-1;
-//                removeStock();
-                //item.removeStock();
-//                this.initialStock= this.initialStock-1;
-//
-//                item.setStock()= item.getStock()-1;
+                        result = item.getSound();//return name of item and its price
+                        name= item.getName();
+                        price=item.getPrice();
 
-              int subtractedItem=  item.getStock()-1;
+                        System.out.println(name);
+                        System.out.println("Cost: $" + price);
+                        System.out.println(result);
+                        System.out.println("Remaining balance: $" + this.remainingBalance);
+                    }
 
-                result = item.getSound();//return name of item and its price
-                name= item.getName();
-                price=item.getPrice();
-
+                } else {
+                    System.out.println("Item is sold out!");
+                }
             }
         }
-
-        System.out.println(name);
-        System.out.println("Cost: $" + price);
-        System.out.println(result);
-        System.out.println("Remaining balance: $" + this.remainingBalance);
     }
 
     public void getRemainingBalance(BigDecimal remainingBalance){
 
         remainingBalance= this.remainingBalance;
+
+    }
+
+    public void finishTransaction(){
+        returnChange();
+        this.machineBalance = new BigDecimal("0");
+
 
     }
 
@@ -146,22 +151,28 @@ public class VendingMachine{
         BigDecimal nickel = new BigDecimal("0.05");
 
         BigDecimal quarters = remainingBalance.divide(quarter).setScale(0, RoundingMode.FLOOR);
-        change = remainingBalance.remainder(quarter);
+        remainingBalance = remainingBalance.remainder(quarter);
         BigDecimal dimes = remainingBalance.divide(dime).setScale(0, RoundingMode.FLOOR);
-        change = remainingBalance.remainder(dime);
+        remainingBalance = remainingBalance.remainder(dime);
         BigDecimal nickels = remainingBalance.divide(nickel).setScale(0, RoundingMode.FLOOR);
 
-        return "Your change is: " + quarters + " quarter(s), " + dimes + " dime(s), and " + nickels + " nickel(s).  Have a nice day!";
+        String coins =  "Your change is: " + quarters + " quarter(s), " + dimes + " dime(s), and " + nickels + " nickel(s).  Have a nice day!";
+        System.out.println(coins);
+        return coins;
+    }
+
+    public void updatedLog(){
+        
+
+
     }
 
 
 
-    public int removeStock() {
 
-        int eachItem = 1;
-        this.initialStock = initialStock - eachItem;
-        return initialStock;
-    }
+//    public int removeStock() {
+//
+//    }
 
 
 
