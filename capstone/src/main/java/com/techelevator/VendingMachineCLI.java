@@ -7,73 +7,69 @@ import java.util.Scanner;
 
 public class VendingMachineCLI {
 
-	private static final String MAIN_MENU_OPTION_DISPLAY_ITEMS = "Display Vending Machine Items";
-	private static final String MAIN_MENU_OPTION_PURCHASE = "Purchase";
-	private static final String MAIN_MENU_OPTION_EXIT = "Exit";
-	private static final String[] MAIN_MENU_OPTIONS = { MAIN_MENU_OPTION_DISPLAY_ITEMS, MAIN_MENU_OPTION_PURCHASE,MAIN_MENU_OPTION_EXIT };
-	private static final String PURCHASE_MENU_OPTION_FEED_MONEY = "Feed Money";
-	private static final String PURCHASE_MENU_OPTION_SELECT_PRODUCT = "Select Product";
-	private static final String PURCHASE_MENU_OPTION_FINISH_TRANSACTION = "Finish Transaction";
-	private static final String[] PURCHASE_MENU_OPTIONS = {PURCHASE_MENU_OPTION_FEED_MONEY, PURCHASE_MENU_OPTION_SELECT_PRODUCT,PURCHASE_MENU_OPTION_FINISH_TRANSACTION};
-	private static final String RETURN_TO_PREVIOUS_MENU = "Return to previous menu";
-	private static final String FEED_MORE_MONEY = "Add more money?";
-	private static final String[] FEED_MENU_OPTION = {RETURN_TO_PREVIOUS_MENU, FEED_MORE_MONEY};
+    private static final String MAIN_MENU_OPTION_DISPLAY_ITEMS = "Display Vending Machine Items";
+    private static final String MAIN_MENU_OPTION_PURCHASE = "Purchase";
+    private static final String MAIN_MENU_OPTION_EXIT = "Exit";
+    private static final String[] MAIN_MENU_OPTIONS = {MAIN_MENU_OPTION_DISPLAY_ITEMS, MAIN_MENU_OPTION_PURCHASE, MAIN_MENU_OPTION_EXIT};
+    private static final String PURCHASE_MENU_OPTION_FEED_MONEY = "Feed Money";
+    private static final String PURCHASE_MENU_OPTION_SELECT_PRODUCT = "Select Product";
+    private static final String PURCHASE_MENU_OPTION_FINISH_TRANSACTION = "Finish Transaction";
+    private static final String[] PURCHASE_MENU_OPTIONS = {PURCHASE_MENU_OPTION_FEED_MONEY, PURCHASE_MENU_OPTION_SELECT_PRODUCT, PURCHASE_MENU_OPTION_FINISH_TRANSACTION};
+    private static final String RETURN_TO_PREVIOUS_MENU = "Return to previous menu";
+    private static final String FEED_MORE_MONEY = "Add more money?";
+    private static final String[] FEED_MENU_OPTION = {RETURN_TO_PREVIOUS_MENU, FEED_MORE_MONEY};
 
-	private Menu menu;
-	private VendingMachine vendingMachine = new VendingMachine();
+    private Menu menu;
+    private VendingMachine vendingMachine = new VendingMachine();
 
-	public VendingMachineCLI(Menu menu) {
-		this.menu = menu;
-	}
+    public VendingMachineCLI(Menu menu) {
+        this.menu = menu;
+    }
 
-	public void run() {
-		while (true) {
-			String choice = (String) menu.getChoiceFromOptions(MAIN_MENU_OPTIONS);
-
-
-			if (choice.equals(MAIN_MENU_OPTION_DISPLAY_ITEMS)) {
-				for (ItemsForSale item : vendingMachine.getInventory()){
-					System.out.format("%s %-20s $%s %s %n", item.getLocation(), item.getName(), item.getPrice(),  "Stock: " +  item.getStock());
-																						//Added "stock" here to disambiguate the last number, unsure about how it looks
-				}
+    public void run() {
+        while (true) {
+            String choice = (String) menu.getChoiceFromOptions(MAIN_MENU_OPTIONS);
 
 
-			} else if (choice.equals(MAIN_MENU_OPTION_PURCHASE)) {
-				String secondMenu = (String) menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
+            if (choice.equals(MAIN_MENU_OPTION_DISPLAY_ITEMS)) {
+                for (ItemsForSale item : vendingMachine.getInventory()) {
+                    System.out.format("%s %-20s $%s %s %n", item.getLocation(), item.getName(),
+                            item.getPrice(), "Stock: " + item.getStock());
+                }
 
-				while (!choice.equals(PURCHASE_MENU_OPTION_FINISH_TRANSACTION)) {
+            } else if (choice.equals(MAIN_MENU_OPTION_PURCHASE)) {
+                String secondMenu = (String) menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
 
+                while (!secondMenu.equals(PURCHASE_MENU_OPTION_FINISH_TRANSACTION)) {//fixed issue by changing choice to secondMenu
 
+                    if (secondMenu.equals(PURCHASE_MENU_OPTION_FEED_MONEY)) { //add money to machine using feed money method
 
-					if (secondMenu.equals(PURCHASE_MENU_OPTION_FEED_MONEY)) {
-						//add money to machine using feed money method
-						//vendingMachine.feedMoney();
-						System.out.println("Current Money Provided: $" + vendingMachine.getMachineBalance());
-						System.out.println("");
-						// this is false System.out.println("This machine only accepts $1, $2, $5, $10 dollar bills.");
-						System.out.println("");
-						vendingMachine.feedMoney();
-						System.out.println("Current Money Provided: $" + vendingMachine.getMachineBalance());
-						String feedMoneyMenu = (String) menu.getChoiceFromOptions(FEED_MENU_OPTION);
+                        System.out.println("");
+                        System.out.println("Current Money Provided: $" + vendingMachine.getMachineBalance());
+                        System.out.println("");
+                        System.out.println("Please enter a whole dollar value:"); //added prompt so it's a little more clear
+                        vendingMachine.feedMoney();
+                        System.out.println("Current Money Provided: $" + vendingMachine.getMachineBalance());
+                        String feedMoneyMenu = (String) menu.getChoiceFromOptions(FEED_MENU_OPTION);
 
-						if (feedMoneyMenu.equals(RETURN_TO_PREVIOUS_MENU)) {
-							menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
-						}
-					} else if (secondMenu.equals(PURCHASE_MENU_OPTION_SELECT_PRODUCT)) {
+                        if (feedMoneyMenu.equals(RETURN_TO_PREVIOUS_MENU)) {
+                            menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
+                        }
 
-						System.out.println("Current Money Provided: $" + vendingMachine.getMachineBalance()); // start with displaying balance
-						//shows the items,
+                    } else if (secondMenu.equals(PURCHASE_MENU_OPTION_SELECT_PRODUCT)) {
 
-						for (ItemsForSale item : vendingMachine.getInventory()) {
-							System.out.format("%s %-20s $%s %s %n", item.getLocation(), item.getName(), item.getPrice(), "Stock: " + item.getStock());
-							//Added "stock" here to disambiguate the last number, unsure about how it looks
-						}
-						//create a final bigdecimal with value of zero
-						if(vendingMachine.getMachineBalance().compareTo(BigDecimal.ZERO)>0) {
+                        System.out.println("Current Money Provided: $" + vendingMachine.getMachineBalance());//Start by displaying balance
 
-							System.out.println("Make a selection");
-							vendingMachine.selectProduct();
-						}
+                        for (ItemsForSale item : vendingMachine.getInventory()) {
+                            System.out.format("%s %-20s $%s %s %n", item.getLocation(), item.getName(),
+                                    item.getPrice(), "Stock: " + item.getStock());
+                        }
+
+                        if (vendingMachine.getMachineBalance().compareTo(BigDecimal.ZERO) > 0) {
+
+                            System.out.println("Make a selection");
+                            vendingMachine.selectProduct();
+                        }
 
 
 //
@@ -93,29 +89,30 @@ public class VendingMachineCLI {
 //							break;
 
 
-					} else if (secondMenu.equals(PURCHASE_MENU_OPTION_FINISH_TRANSACTION)) {
-						//calculates & dispenses change into Quarters, dimes and nickels, returns change,
-						//updates current balance to 0.
-						//return to main menu
-						//update log.txt
-					}
-				}
-			}
-		else if(choice.equals(MAIN_MENU_OPTION_EXIT)){
+                    } else if (secondMenu.equals(PURCHASE_MENU_OPTION_FINISH_TRANSACTION)) {
+                        //calculates & dispenses change into Quarters, dimes and nickels, returns change,
+                        //updates current balance to 0.
+                        //return to main menu
+                        //update log.txt
+                    }
 
-				System.exit(0);
-			}
-		}
+                }
+            } else if (choice.equals(MAIN_MENU_OPTION_EXIT)) {
+
+                System.exit(0);
+            }
+        }
+
+
+    }
 
 
 
-	}
-
-	public static void main(String[] args) {
-		Menu menu = new Menu(System.in, System.out);
-		VendingMachineCLI cli = new VendingMachineCLI(menu);
-		cli.run();
-	}
+    public static void main(String[] args) {
+        Menu menu = new Menu(System.in, System.out);
+        VendingMachineCLI cli = new VendingMachineCLI(menu);
+        cli.run();
+    }
 }
 
 

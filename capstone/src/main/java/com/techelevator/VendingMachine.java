@@ -12,6 +12,7 @@ public class VendingMachine {
     private static int currentStock;
     private BigDecimal machineBalance = new BigDecimal("0.00");
     private BigDecimal remainingBalance = new BigDecimal("0.00");
+    private BigDecimal change = new BigDecimal("0.00");
 
     List<ItemsForSale> inventory = new ArrayList<>();
 
@@ -105,14 +106,12 @@ public class VendingMachine {
 
         for (ItemsForSale item : inventory) {
             if (item.getLocation().equals(userResponseToUpper)) { //make case-insensitive
-                //subtract item price from machine balance
-                //return name of item and its price
+
                 //If code doesn't exist return to purchase menu, If sold out notify, and return to purchase menu *done in CLI
-                //
 
-                this.remainingBalance= getMachineBalance().subtract(item.getPrice());
+                this.remainingBalance= getMachineBalance().subtract(item.getPrice()); //subtract item price from balance
 
-                result = item.getSound();
+                result = item.getSound();//return name of item and its price
                 name= item.getName();
                 price=item.getPrice();
 
@@ -131,16 +130,21 @@ public class VendingMachine {
 
     }
 
-    public void calculateChange() {
+    public String returnChange(){
+        BigDecimal quarter = new BigDecimal("0.25");
+        BigDecimal dime = new BigDecimal("0.10");
+        BigDecimal nickel = new BigDecimal("0.05");
 
-        //taking the remaining balance and dividing it from quarters to nickels
-        //
-        
-        int quarter = 25;
-        int dime = 10;
-        int nickle = 5;
+        BigDecimal quarters = remainingBalance.divide(quarter).setScale(0, RoundingMode.FLOOR);
+        change = remainingBalance.remainder(quarter);
+        BigDecimal dimes = remainingBalance.divide(dime).setScale(0, RoundingMode.FLOOR);
+        change = remainingBalance.remainder(dime);
+        BigDecimal nickels = remainingBalance.divide(nickel).setScale(0, RoundingMode.FLOOR);
 
+        return "Your change is: " + quarters + " quarter(s), " + dimes + " dime(s), and " + nickels + " nickel(s).  Have a nice day!";
     }
+
+
 
     public void removeStock(int number) {
         number = 1;

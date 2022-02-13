@@ -10,8 +10,6 @@ public class Chips extends ItemsForSale{
         super(location,name,price,stock);
     }
 
-
-
     public String getSound() {
         return "Crunch Crunch, Yum!";
     }
