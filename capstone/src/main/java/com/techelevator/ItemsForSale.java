@@ -46,6 +46,11 @@ public abstract class ItemsForSale {
         return stock;
     }
 
+    //new
+    public int removeStock() {
+        return stock-1;
+    }
+
     public void setStock(int stock) {
         this.stock = stock;
     }

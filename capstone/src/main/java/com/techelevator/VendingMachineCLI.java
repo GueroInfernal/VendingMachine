@@ -70,7 +70,7 @@ public class VendingMachineCLI {
                                 System.out.println("Make a selection");
                                 vendingMachine.selectProduct();
                             } else {
-                                System.out.println("YOU");
+                                System.out.println("You have insufficient funds try again!");
 
                             }
 

@@ -6,10 +6,10 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
 
-public class VendingMachine {
+public class VendingMachine{
 
-    private static final int INITIAL_STOCK = 5;
-    private static int currentStock;
+   private static int initialStock = 5;
+
     private BigDecimal machineBalance = new BigDecimal("0.00");
     private BigDecimal remainingBalance = new BigDecimal("0.00");
     private BigDecimal change = new BigDecimal("0.00");
@@ -25,8 +25,8 @@ public class VendingMachine {
         return this.machineBalance;
     }
 
-    public int getCurrentStock() {
-        return this.getCurrentStock();
+    public int getInitialStock() {
+        return this.initialStock;
     }
 
     public List<ItemsForSale> getInventory() {
@@ -47,16 +47,16 @@ public class VendingMachine {
                 String line = fileToRead.nextLine();
                 String[] parts = line.split("\\|");
                 if (parts[3].equals("Chip")) {
-                    Chips chip = new Chips(parts[0], parts[1], new BigDecimal(parts[2]), INITIAL_STOCK);
+                    Chips chip = new Chips(parts[0], parts[1], new BigDecimal(parts[2]), 5);
                     inventory.add(chip);
                 } else if (parts[3].equals("Candy")) {
-                    Candy candy = new Candy(parts[0], parts[1], new BigDecimal(parts[2]), INITIAL_STOCK);
+                    Candy candy = new Candy(parts[0], parts[1], new BigDecimal(parts[2]), initialStock);
                     inventory.add(candy);
                 } else if (parts[3].equals("Drink")) {
-                    Beverages drink = new Beverages(parts[0], parts[1], new BigDecimal(parts[2]), INITIAL_STOCK);
+                    Beverages drink = new Beverages(parts[0], parts[1], new BigDecimal(parts[2]), initialStock);
                     inventory.add(drink);
                 } else {
-                    Gum gum = new Gum(parts[0], parts[1], new BigDecimal(parts[2]), INITIAL_STOCK);
+                    Gum gum = new Gum(parts[0], parts[1], new BigDecimal(parts[2]), initialStock);
                     inventory.add(gum);
                 }
 
@@ -110,7 +110,16 @@ public class VendingMachine {
                 //If code doesn't exist return to purchase menu, If sold out notify, and return to purchase menu *done in CLI
 
                 this.remainingBalance= getMachineBalance().subtract(item.getPrice()); //subtract item price from balance
+
                 this.machineBalance= remainingBalance;
+//                //this.initialStock = item.getStock()-1;
+//                removeStock();
+                //item.removeStock();
+//                this.initialStock= this.initialStock-1;
+//
+//                item.setStock()= item.getStock()-1;
+
+              int subtractedItem=  item.getStock()-1;
 
                 result = item.getSound();//return name of item and its price
                 name= item.getName();
@@ -147,9 +156,11 @@ public class VendingMachine {
 
 
 
-    public void removeStock(int number) {
-        number = 1;
-        currentStock = INITIAL_STOCK - number;
+    public int removeStock() {
+
+        int eachItem = 1;
+        this.initialStock = initialStock - eachItem;
+        return initialStock;
     }
 
 
