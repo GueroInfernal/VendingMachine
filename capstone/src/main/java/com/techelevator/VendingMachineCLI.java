@@ -38,10 +38,11 @@ public class VendingMachineCLI {
                 }
 
             } else if (choice.equals(MAIN_MENU_OPTION_PURCHASE)) {
-                String secondMenu = (String) menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
 
-                while (!secondMenu.equals(PURCHASE_MENU_OPTION_FINISH_TRANSACTION)) {//fixed issue by changing choice to secondMenu
+                boolean doneWithPurchase = false;
 
+                while (!doneWithPurchase) {//fixed issue by changing choice to secondMenu
+                    String secondMenu = (String) menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
                     if (secondMenu.equals(PURCHASE_MENU_OPTION_FEED_MONEY)) { //add money to machine using feed money method
 
                         System.out.println("");
@@ -50,26 +51,28 @@ public class VendingMachineCLI {
                         System.out.println("Please enter a whole dollar value:"); //added prompt so it's a little more clear
                         vendingMachine.feedMoney();
                         System.out.println("Current Money Provided: $" + vendingMachine.getMachineBalance());
-                        String feedMoneyMenu = (String) menu.getChoiceFromOptions(FEED_MENU_OPTION);
 
-                        if (feedMoneyMenu.equals(RETURN_TO_PREVIOUS_MENU)) {
-                            menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
-                        }
+
+
 
                     } else if (secondMenu.equals(PURCHASE_MENU_OPTION_SELECT_PRODUCT)) {
 
-                        System.out.println("Current Money Provided: $" + vendingMachine.getMachineBalance());//Start by displaying balance
 
-                        for (ItemsForSale item : vendingMachine.getInventory()) {
-                            System.out.format("%s %-20s $%s %s %n", item.getLocation(), item.getName(),
-                                    item.getPrice(), "Stock: " + item.getStock());
-                        }
+                            System.out.println("Current Money Provided: $" + vendingMachine.getMachineBalance());//Start by displaying balance
 
-                        if (vendingMachine.getMachineBalance().compareTo(BigDecimal.ZERO) > 0) {
+                            for (ItemsForSale item : vendingMachine.getInventory()) {
+                                System.out.format("%s %-20s $%s %s %n", item.getLocation(), item.getName(),
+                                        item.getPrice(), "Stock: " + item.getStock());
+                            }
 
-                            System.out.println("Make a selection");
-                            vendingMachine.selectProduct();
-                        }
+                            if (vendingMachine.getMachineBalance().compareTo(BigDecimal.ZERO) > 0) {
+
+                                System.out.println("Make a selection");
+                                vendingMachine.selectProduct();
+                            } else {
+                                System.out.println("YOU");
+
+                            }
 
 
 //
@@ -85,11 +88,11 @@ public class VendingMachineCLI {
 //							//prompts for a choice, dispenses product & returns message
 //							System.out.println("Please enter this ");
 //							vendingMachine.selectProduct();
-//
-//							break;
+
 
 
                     } else if (secondMenu.equals(PURCHASE_MENU_OPTION_FINISH_TRANSACTION)) {
+                        doneWithPurchase=true;
                         //calculates & dispenses change into Quarters, dimes and nickels, returns change,
                         //updates current balance to 0.
                         //return to main menu
@@ -105,7 +108,6 @@ public class VendingMachineCLI {
 
 
     }
-
 
 
     public static void main(String[] args) {

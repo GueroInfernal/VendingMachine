@@ -110,6 +110,7 @@ public class VendingMachine {
                 //If code doesn't exist return to purchase menu, If sold out notify, and return to purchase menu *done in CLI
 
                 this.remainingBalance= getMachineBalance().subtract(item.getPrice()); //subtract item price from balance
+                this.machineBalance= remainingBalance;
 
                 result = item.getSound();//return name of item and its price
                 name= item.getName();
@@ -151,8 +152,10 @@ public class VendingMachine {
         currentStock = INITIAL_STOCK - number;
     }
 
-    public void giveChange() {
-        Change change = new Change();
 
-    }
+
+//    public void giveChange() {
+//        Change change = new Change();
+//
+//    }
 }
