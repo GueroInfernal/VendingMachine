@@ -1,33 +1,38 @@
 package com.techelevator;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-public class VendingMachine{
+public class VendingMachine {
 
-   private static int initialStock = 5;
+    private static int initialStock = 5;
 
+
+    private BigDecimal endingBalance= new BigDecimal("0.00");
     private BigDecimal machineBalance = new BigDecimal("0.00");
-    private BigDecimal remainingBalance = new BigDecimal("0.00");
+
     private BigDecimal change = new BigDecimal("0.00");
 
     List<ItemsForSale> inventory = new ArrayList<>();
 
+    List<String> logEntries = new ArrayList<>();
+
+
+    public List<String> getLogEntries() {
+        return this.logEntries;
+    }
 
     public BigDecimal getMachineBalance() {
         return this.machineBalance;
     }
 
-    public BigDecimal getRemainingBalance(){
-        return this.machineBalance;
-    }
 
-    public int getInitialStock() {
-        return this.initialStock;
-    }
+
+
 
     public List<ItemsForSale> getInventory() {
         return this.inventory;
@@ -76,19 +81,11 @@ public class VendingMachine{
         //rounds value up to the nearest whole number.
         amountToDeposit = amountToDeposit.setScale(0, RoundingMode.UP);
 
+
         return this.machineBalance = machineBalance.add(amountToDeposit);
 
-//       System.out.println("Current balance: $" + machineBalance);
-//       System.out.println("");
-//       System.out.println("Please add funds>>>");
-//       System.out.println("");
-//        Scanner getInput = new Scanner(System.in);
-//        String moneyInput = getInput.nextLine();
-//
-//        BigDecimal money = new BigDecimal(moneyInput); // requires user input get money method
-//        machineBalance = machineBalance.add(money);
-//        // Needs to update balance
-//        // Need to stay on this sub-menu until exit
+
+
     }
 
 
@@ -98,31 +95,37 @@ public class VendingMachine{
 
         Scanner userInput = new Scanner(System.in);
         String userResponse = userInput.nextLine();
-        String userResponseToUpper=userResponse.toUpperCase();
+        String userResponseToUpper = userResponse.toUpperCase();
 
         String result = "Invalid input";
-        String name="";
-        BigDecimal price= new BigDecimal("0.00");
+        String name = "";
+        BigDecimal price = new BigDecimal("0.00");
 
         for (ItemsForSale item : inventory) {
             if (item.getLocation().equals(userResponseToUpper)) { //make case-insensitive
 
 
-                if(item.getStock() > 0 ) {
-                    this.remainingBalance= getMachineBalance().subtract(item.getPrice()); //subtract item price from balance
-                    this.machineBalance= remainingBalance;
+                if (item.getStock() > 0) {
+
+                    BigDecimal startingBalance= getMachineBalance(); // new added for log
+
+
+
                     int newStock = item.removeStock();
                     item.setStock(newStock);
-                    if(newStock < initialStock) {
+                    this.machineBalance= this.machineBalance.subtract(item.getPrice());
+                    logFormat(item.getName() + " " + item.getLocation(), startingBalance, getMachineBalance());
+
+                    if (newStock < initialStock) {
 
                         result = item.getSound();//return name of item and its price
-                        name= item.getName();
-                        price=item.getPrice();
+                        name = item.getName();
+                        price = item.getPrice();
 
                         System.out.println(name);
                         System.out.println("Cost: $" + price);
                         System.out.println(result);
-                        System.out.println("Remaining balance: $" + this.remainingBalance);
+                        System.out.println("Remaining balance: $" + this.getMachineBalance());
                     }
 
                 } else {
@@ -132,52 +135,61 @@ public class VendingMachine{
         }
     }
 
-    public void getRemainingBalance(BigDecimal remainingBalance){
 
-        remainingBalance= this.remainingBalance;
-
-    }
-
-    public void finishTransaction(){
+    public void finishTransaction() {
         returnChange();
         this.machineBalance = new BigDecimal("0");
 
 
     }
 
-    public String returnChange(){
+    public String returnChange() {
         BigDecimal quarter = new BigDecimal("0.25");
         BigDecimal dime = new BigDecimal("0.10");
         BigDecimal nickel = new BigDecimal("0.05");
 
-        BigDecimal quarters = remainingBalance.divide(quarter).setScale(0, RoundingMode.FLOOR);
-        remainingBalance = remainingBalance.remainder(quarter);
-        BigDecimal dimes = remainingBalance.divide(dime).setScale(0, RoundingMode.FLOOR);
-        remainingBalance = remainingBalance.remainder(dime);
-        BigDecimal nickels = remainingBalance.divide(nickel).setScale(0, RoundingMode.FLOOR);
+        BigDecimal startingBalance = machineBalance;
 
-        String coins =  "Your change is: " + quarters + " quarter(s), " + dimes + " dime(s), and " + nickels + " nickel(s).  Have a nice day!";
+        BigDecimal quarters = machineBalance.divide(quarter).setScale(0, RoundingMode.FLOOR);
+        machineBalance = machineBalance.remainder(quarter);
+        BigDecimal dimes = machineBalance.divide(dime).setScale(0, RoundingMode.FLOOR);
+        machineBalance = machineBalance.remainder(dime);
+        BigDecimal nickels = machineBalance.divide(nickel).setScale(0, RoundingMode.FLOOR);
+
+        logFormat("GIVE CHANGE: ",startingBalance,machineBalance);
+
+        String coins = "Your change is: " + quarters + " quarter(s), " + dimes + " dime(s), and " + nickels + " nickel(s).  Have a nice day!";
         System.out.println(coins);
         return coins;
     }
 
-    public void updatedLog(){
-        
+    public List<String> logFormat(String message, BigDecimal startingBalance, BigDecimal endingBalance) {
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm:ss a");
+        String formattedDate = dateFormatter.format(LocalDateTime.now());
 
+
+        String format = formattedDate + " " + message + " " + startingBalance + " " + endingBalance;
+
+        logEntries.add(format);
+
+        return logEntries;
+    }
+
+    public void log() {
+        File outputFile = new File("log.txt");
+
+        List<String> logEntries= getLogEntries();
+
+        try (PrintWriter logFile = new PrintWriter(new FileWriter("log.txt", true))) {
+
+            for(String logEntry : logEntries){
+                logFile.println(logEntry);
+            }
+        }catch (IOException e){
+            System.out.println(e.getMessage());
+        }
 
     }
 
 
-
-
-//    public int removeStock() {
-//
-//    }
-
-
-
-//    public void giveChange() {
-//        Change change = new Change();
-//
-//    }
 }

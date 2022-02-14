@@ -3,7 +3,7 @@ package com.techelevator;
 import com.techelevator.view.Menu;
 
 import java.math.BigDecimal;
-import java.util.Scanner;
+
 
 public class VendingMachineCLI {
 
@@ -49,7 +49,9 @@ public class VendingMachineCLI {
                         System.out.println("Current Money Provided: $" + vendingMachine.getMachineBalance());
                         System.out.println("");
                         System.out.println("Please enter a whole dollar value:"); //added prompt so it's a little more clear
+                        BigDecimal startingBalance= vendingMachine.getMachineBalance();
                         vendingMachine.feedMoney();
+                        vendingMachine.logFormat(PURCHASE_MENU_OPTION_FEED_MONEY,startingBalance,vendingMachine.getMachineBalance());
                         System.out.println("Current Money Provided: $" + vendingMachine.getMachineBalance());
 
 
@@ -70,6 +72,8 @@ public class VendingMachineCLI {
                                 System.out.println("Make a selection");
                                 vendingMachine.selectProduct();
 
+
+
                             } else {
                                 System.out.println("You have insufficient funds try again!");
 
@@ -81,6 +85,7 @@ public class VendingMachineCLI {
                     } else if (secondMenu.equals(PURCHASE_MENU_OPTION_FINISH_TRANSACTION)) {
                         doneWithPurchase=true;
                         vendingMachine.finishTransaction();
+                        vendingMachine.log();
 
 
 
@@ -92,6 +97,7 @@ public class VendingMachineCLI {
 
                 }
             } else if (choice.equals(MAIN_MENU_OPTION_EXIT)) {
+
 
                 System.exit(0);
             }
@@ -108,5 +114,6 @@ public class VendingMachineCLI {
     }
 }
 
+//TODO Log give change to log file
 
 //TODO log purchases, return change.
