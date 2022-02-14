@@ -31,17 +31,12 @@ public class VendingMachine {
     }
 
 
-
-
-
     public List<ItemsForSale> getInventory() {
         return this.inventory;
-
     }
 
     VendingMachine() {
         loadInventory();
-
     }
 
     private void loadInventory() {
@@ -72,7 +67,6 @@ public class VendingMachine {
         }
     }
 
-
     public BigDecimal feedMoney() { //fixed feed money to update the current balance everytime funds are added.
 
         Scanner userInput = new Scanner(System.in);
@@ -81,9 +75,7 @@ public class VendingMachine {
         //rounds value up to the nearest whole number.
         amountToDeposit = amountToDeposit.setScale(0, RoundingMode.UP);
 
-
         return this.machineBalance = machineBalance.add(amountToDeposit);
-
 
 
     }
@@ -109,12 +101,11 @@ public class VendingMachine {
 
                     BigDecimal startingBalance= getMachineBalance(); // new added for log
 
+                    if(machineBalance.compareTo(item.getPrice()) > 0) {
+                        this.machineBalance = this.machineBalance.subtract(item.getPrice());
+                        int newStock = item.removeStock();
+                        item.setStock(newStock);
 
-
-                    int newStock = item.removeStock();
-                    item.setStock(newStock);
-                    this.machineBalance= this.machineBalance.subtract(item.getPrice());
-                    logFormat(item.getName() + " " + item.getLocation(), startingBalance, getMachineBalance());
 
                     if (newStock < initialStock) {
 
@@ -126,8 +117,11 @@ public class VendingMachine {
                         System.out.println("Cost: $" + price);
                         System.out.println(result);
                         System.out.println("Remaining balance: $" + this.getMachineBalance());
+                        logFormat(item.getName() + " " + item.getLocation(), startingBalance, getMachineBalance());
                     }
-
+                    }else {
+                        System.out.println("insufficient funds, please add more!");
+                    }
                 } else {
                     System.out.println("Item is sold out!");
                 }

@@ -51,7 +51,7 @@ public class VendingMachineCLI {
                         System.out.println("Please enter a whole dollar value:"); //added prompt so it's a little more clear
                         BigDecimal startingBalance= vendingMachine.getMachineBalance();
                         vendingMachine.feedMoney();
-                        vendingMachine.logFormat(PURCHASE_MENU_OPTION_FEED_MONEY,startingBalance,vendingMachine.getMachineBalance());
+                        vendingMachine.logFormat("FEED MONEY: ",startingBalance,vendingMachine.getMachineBalance());
                         System.out.println("Current Money Provided: $" + vendingMachine.getMachineBalance());
 
 
@@ -75,7 +75,7 @@ public class VendingMachineCLI {
 
 
                             } else {
-                                System.out.println("You have insufficient funds try again!");
+                                System.out.println("You have insufficient funds, please try again!");
 
                             }
 						    //prompts for a choice, dispenses product & returns message
